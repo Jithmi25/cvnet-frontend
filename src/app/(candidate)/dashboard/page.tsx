@@ -1,0 +1,193 @@
+import Link from 'next/link';
+import { Search, Bell, TrendingUp, Eye, Briefcase, BarChart2, ArrowRight, ExternalLink } from 'lucide-react';
+
+const stats = [
+  { label: 'Readiness Score', value: '78/100', sub: 'Good', color: 'text-blue-600', bg: 'bg-blue-50', icon: TrendingUp },
+  { label: 'Skill Match', value: '85%', sub: 'Avg. match rate', color: 'text-emerald-600', bg: 'bg-emerald-50', icon: BarChart2 },
+  { label: 'Profile Views', value: '124', sub: 'Last 30 days', color: 'text-violet-600', bg: 'bg-violet-50', icon: Eye },
+];
+
+const topMissingSkills = [
+  { name: 'Python', priority: 'Critical', match: 60, color: 'bg-red-500' },
+  { name: 'AWS', priority: 'Critical', match: 45, color: 'bg-red-500' },
+  { name: 'Leadership', priority: 'Medium', match: 30, color: 'bg-amber-500' },
+  { name: 'SQL', priority: 'Medium', match: 60, color: 'bg-amber-500' },
+  { name: 'Cloud Architecture', priority: 'Low Priority', match: 20, color: 'bg-slate-400' },
+  { name: 'Team Management', priority: 'Low Priority', match: 30, color: 'bg-slate-400' },
+];
+
+const recentApplications = [
+  { role: 'Senior Frontend Developer', company: 'TechCorp Inc.', date: 'Oct 24, 2023', status: 'In Review', match: 92 },
+  { role: 'Product Designer', company: 'Design Studio', date: 'Oct 20, 2023', status: 'Interview', match: 78 },
+];
+
+const statusColors: Record<string, string> = {
+  'In Review': 'bg-amber-100 text-amber-700',
+  'Interview': 'bg-blue-100 text-blue-700',
+  'Applied': 'bg-slate-100 text-slate-600',
+  'Rejected': 'bg-red-100 text-red-700',
+  'Offer': 'bg-green-100 text-green-700',
+};
+
+export default function DashboardPage() {
+  return (
+    <div className="p-6 sm:p-8 max-w-7xl">
+      {/* Top bar */}
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-2xl font-extrabold text-slate-900">Welcome back, Alex</h1>
+          <p className="text-slate-500 text-sm mt-0.5">Here&apos;s what&apos;s happening with your career today.</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="relative hidden sm:block">
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input placeholder="Search jobs, skills..." className="pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 w-56" />
+          </div>
+          <button className="relative p-2 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
+            <Bell size={18} className="text-slate-600" />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+          </button>
+        </div>
+      </div>
+
+      {/* Profile Readiness Banner */}
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-6 mb-6 text-white">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <p className="text-blue-100 text-sm font-medium mb-1">Ready for your next big role?</p>
+            <p className="text-base font-semibold">Your profile readiness has increased by <strong>5%</strong> this week. Keep going!</p>
+            <div className="flex gap-6 mt-3 text-sm">
+              <span className="flex items-center gap-1.5"><TrendingUp size={14} className="text-green-300" /><strong>+5%</strong> Readiness</span>
+              <span className="flex items-center gap-1.5"><BarChart2 size={14} className="text-blue-200" /><strong>+12%</strong> Profile Views</span>
+              <span className="flex items-center gap-1.5"><Eye size={14} className="text-violet-200" /><strong>+20%</strong> Applications</span>
+            </div>
+          </div>
+          <div className="flex gap-3 flex-shrink-0">
+            <Link href="/cv" className="bg-white text-blue-600 font-semibold text-sm px-4 py-2 rounded-xl hover:bg-blue-50 transition-colors whitespace-nowrap">View Profile</Link>
+            <Link href="/skill-gap" className="border border-blue-300 text-white font-semibold text-sm px-4 py-2 rounded-xl hover:bg-blue-700 transition-colors whitespace-nowrap">Update Skills</Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        {stats.map(({ label, value, sub, color, bg, icon: Icon }) => (
+          <div key={label} className="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-sm font-medium text-slate-500">{label}</p>
+              <div className={`w-9 h-9 rounded-xl ${bg} flex items-center justify-center`}>
+                <Icon size={17} className={color} />
+              </div>
+            </div>
+            <p className={`text-2xl font-extrabold ${color}`}>{value}</p>
+            <p className="text-xs text-slate-400 mt-1">{sub}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Bottom two columns */}
+      <div className="grid lg:grid-cols-2 gap-6">
+        {/* Skills Gap Widget */}
+        <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm">
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <h2 className="font-bold text-slate-900">Skills Gap Analysis</h2>
+              <p className="text-xs text-slate-400 mt-0.5">Candidate vs. Job Requirements</p>
+            </div>
+            <Link href="/skill-gap" className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1">
+              View Details <ArrowRight size={12} />
+            </Link>
+          </div>
+
+          <div className="mb-4">
+            <div className="flex justify-between text-xs text-slate-500 mb-1.5">
+              <span>React (Your Skill)</span>
+              <span>Job Requirement</span>
+            </div>
+            <div className="relative bg-slate-100 rounded-full h-3">
+              <div className="absolute left-0 top-0 h-full bg-blue-500 rounded-full" style={{ width: '70%' }} />
+              <div className="absolute top-0 h-full border-r-2 border-slate-900" style={{ left: '85%' }} />
+            </div>
+          </div>
+
+          <h3 className="text-sm font-semibold text-slate-700 mb-3">Top Missing Skills</h3>
+          <div className="space-y-2.5">
+            {topMissingSkills.slice(0, 4).map(({ name, priority, match, color }) => (
+              <div key={name} className="flex items-center gap-3">
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-medium text-slate-700">{name}</span>
+                    <span className={`text-xs px-1.5 py-0.5 rounded-full font-semibold ${priority === 'Critical' ? 'bg-red-100 text-red-600' : priority === 'Medium' ? 'bg-amber-100 text-amber-600' : 'bg-slate-100 text-slate-500'}`}>{priority}</span>
+                  </div>
+                  <div className="bg-slate-100 rounded-full h-1.5">
+                    <div className={`${color} h-full rounded-full`} style={{ width: `${match}%` }} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <Link href="/skill-gap" className="mt-4 flex items-center justify-center gap-1 text-xs text-blue-600 font-semibold hover:text-blue-700">
+            Find Courses <ExternalLink size={11} />
+          </Link>
+        </div>
+
+        {/* Recent Applications */}
+        <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm">
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <h2 className="font-bold text-slate-900">Recent Applications</h2>
+              <p className="text-xs text-slate-400 mt-0.5">Your latest job applications</p>
+            </div>
+            <Link href="/applications" className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1">
+              View All <ArrowRight size={12} />
+            </Link>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-slate-100">
+                  <th className="text-left pb-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Role</th>
+                  <th className="text-left pb-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Date</th>
+                  <th className="text-left pb-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {recentApplications.map(({ role, company, date, status, match }) => (
+                  <tr key={role} className="hover:bg-slate-50 transition-colors">
+                    <td className="py-3 pr-4">
+                      <p className="font-semibold text-slate-900 text-sm">{role}</p>
+                      <p className="text-xs text-slate-400">{company}</p>
+                    </td>
+                    <td className="py-3 pr-4 text-xs text-slate-500 whitespace-nowrap">{date}</td>
+                    <td className="py-3">
+                      <div className="flex items-center gap-2">
+                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${statusColors[status]}`}>{status}</span>
+                        <span className="text-xs font-bold text-blue-600">{match}%</span>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-5 pt-5 border-t border-slate-100">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                <Briefcase size={15} className="text-blue-600" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-slate-900">Suggested: AWS Solutions Architect</p>
+                <p className="text-xs text-slate-400">Course recommendation based on your gaps</p>
+              </div>
+            </div>
+            <Link href="/skill-gap" className="block w-full text-center bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold text-xs py-2.5 rounded-xl transition-colors">
+              Explore Recommended Courses
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
