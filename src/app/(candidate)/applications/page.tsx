@@ -79,11 +79,7 @@ const statusConfig: Record<string, { bg: string; text: string }> = {
   Rejected: { bg: "bg-red-100", text: "text-red-700" },
 };
 
-const stats = [
-  { label: "Total Applied", value: 24, change: "" },
-  { label: "Active Interviews", value: 5, change: "Next: Today" },
-  { label: "Offer Received", value: 1, change: "Expires in 4 days" },
-];
+const stats = [{ label: "Total Applied", value: 24, change: "" }];
 
 function getMatchBarWidthClass(match: number) {
   if (match >= 95) return "w-[95%]";
@@ -109,14 +105,7 @@ export default function ApplicationsPage() {
     status: "Applied",
   });
 
-  const statuses = [
-    "All",
-    "In Review",
-    "Interviewing",
-    "Applied",
-    "Offer Received",
-    "Rejected",
-  ];
+  const statuses = ["All", "In Review", "Interviewing", "Applied", "Rejected"];
 
   const applicationStatuses = statuses.filter((s) => s !== "All");
 
@@ -271,11 +260,11 @@ export default function ApplicationsPage() {
       )}
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 gap-4 mb-6 sm:max-w-xs">
         {stats.map(({ label, value, change }) => (
           <div
             key={label}
-            className={`bg-white border border-slate-100 rounded-2xl p-5 shadow-sm ${label === "Offer Received" ? "border-green-200 bg-green-50" : ""}`}
+            className="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm"
           >
             <p className="text-sm font-medium text-slate-500 mb-1">{label}</p>
             <p className="text-3xl font-extrabold text-slate-900">{value}</p>
@@ -335,63 +324,32 @@ export default function ApplicationsPage() {
                   Applied Date
                 </th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                  Match %
-                </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">
                   Action
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
-              {filtered.map(
-                ({ role, company, location, date, match, status }) => (
-                  <tr
-                    key={role + company}
-                    className="hover:bg-slate-50 transition-colors"
-                  >
-                    <td className="px-6 py-4">
-                      <p className="font-semibold text-slate-900">{role}</p>
-                      <p className="text-xs text-slate-400">
-                        {company} · {location}
-                      </p>
-                    </td>
-                    <td className="px-4 py-4 text-xs text-slate-500 whitespace-nowrap">
-                      {date}
-                    </td>
-                    <td className="px-4 py-4">
-                      <div className="flex items-center gap-2">
-                        <div className="w-12 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                          <div
-                            className={`h-full rounded-full ${match >= 80 ? "bg-green-500" : match >= 60 ? "bg-blue-500" : "bg-amber-500"} ${getMatchBarWidthClass(match)}`}
-                          />
-                        </div>
-                        <span
-                          className={`text-xs font-bold ${match >= 80 ? "text-green-600" : match >= 60 ? "text-blue-600" : "text-amber-600"}`}
-                        >
-                          {match}%
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-4">
-                      <span
-                        className={`px-2.5 py-1 rounded-full text-xs font-semibold ${statusConfig[status]?.bg} ${statusConfig[status]?.text}`}
-                      >
-                        {status}
-                      </span>
-                    </td>
-                    <td className="px-4 py-4">
-                      <button className="text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline transition-colors">
-                        {status === "Offer Received"
-                          ? "View Offer"
-                          : "View Details"}
-                      </button>
-                    </td>
-                  </tr>
-                ),
-              )}
+              {filtered.map(({ role, company, location, date }) => (
+                <tr
+                  key={role + company}
+                  className="hover:bg-slate-50 transition-colors"
+                >
+                  <td className="px-6 py-4">
+                    <p className="font-semibold text-slate-900">{role}</p>
+                    <p className="text-xs text-slate-400">
+                      {company} · {location}
+                    </p>
+                  </td>
+                  <td className="px-4 py-4 text-xs text-slate-500 whitespace-nowrap">
+                    {date}
+                  </td>
+                  <td className="px-4 py-4">
+                    <button className="text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline transition-colors">
+                      View Details
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
