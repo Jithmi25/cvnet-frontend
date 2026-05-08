@@ -3,7 +3,16 @@
 import { useState } from "react";
 import { Search, Plus, ChevronDown, ArrowUpDown } from "lucide-react";
 
-const allApplications = [
+type Application = {
+  role: string;
+  company: string;
+  location: string;
+  date: string;
+  match: number;
+  status: string;
+};
+
+const seedApplications: Application[] = [
   {
     role: "Senior Frontend Developer",
     company: "TechCorp Inc.",
@@ -76,9 +85,29 @@ const stats = [
   { label: "Offer Received", value: 1, change: "Expires in 4 days" },
 ];
 
+function getMatchBarWidthClass(match: number) {
+  if (match >= 95) return "w-[95%]";
+  if (match >= 90) return "w-[90%]";
+  if (match >= 85) return "w-[85%]";
+  if (match >= 75) return "w-[75%]";
+  if (match >= 65) return "w-[65%]";
+  if (match >= 50) return "w-[50%]";
+  return "w-[40%]";
+}
+
 export default function ApplicationsPage() {
+  const [applications, setApplications] =
+    useState<Application[]>(seedApplications);
   const [filterStatus, setFilterStatus] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newApplication, setNewApplication] = useState({
+    role: "",
+    company: "",
+    location: "",
+    match: 55,
+    status: "Applied",
+  });
 
   const statuses = [
     "All",
@@ -89,7 +118,40 @@ export default function ApplicationsPage() {
     "Rejected",
   ];
 
-  const filtered = allApplications.filter((a) => {
+  const applicationStatuses = statuses.filter((s) => s !== "All");
+
+  const handleAddApplication = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const appliedDate = new Date().toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+
+    setApplications((prev) => [
+      {
+        role: newApplication.role.trim(),
+        company: newApplication.company.trim(),
+        location: newApplication.location.trim() || "Remote",
+        date: appliedDate,
+        match: Math.max(0, Math.min(100, Number(newApplication.match) || 0)),
+        status: newApplication.status,
+      },
+      ...prev,
+    ]);
+
+    setNewApplication({
+      role: "",
+      company: "",
+      location: "",
+      match: 55,
+      status: "Applied",
+    });
+    setShowAddForm(false);
+  };
+
+  const filtered = applications.filter((a) => {
     const matchesStatus = filterStatus === "All" || a.status === filterStatus;
     const matchesSearch =
       a.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -109,10 +171,104 @@ export default function ApplicationsPage() {
             Track and manage your job search
           </p>
         </div>
-        <button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors">
+        <button
+          onClick={() => setShowAddForm((prev) => !prev)}
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors"
+        >
           <Plus size={16} /> Add New
         </button>
       </div>
+
+      {showAddForm && (
+        <form
+          onSubmit={handleAddApplication}
+          className="bg-white border border-slate-100 rounded-2xl p-5 mb-6 shadow-sm"
+        >
+          <h2 className="text-base font-bold text-slate-900 mb-4">
+            Add Application
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <input
+              required
+              value={newApplication.role}
+              onChange={(e) =>
+                setNewApplication((prev) => ({ ...prev, role: e.target.value }))
+              }
+              placeholder="Role"
+              className="px-3 py-2 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <input
+              required
+              value={newApplication.company}
+              onChange={(e) =>
+                setNewApplication((prev) => ({
+                  ...prev,
+                  company: e.target.value,
+                }))
+              }
+              placeholder="Company"
+              className="px-3 py-2 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <input
+              value={newApplication.location}
+              onChange={(e) =>
+                setNewApplication((prev) => ({
+                  ...prev,
+                  location: e.target.value,
+                }))
+              }
+              placeholder="Location (optional)"
+              className="px-3 py-2 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <input
+              type="number"
+              min={0}
+              max={100}
+              value={newApplication.match}
+              onChange={(e) =>
+                setNewApplication((prev) => ({
+                  ...prev,
+                  match: Number(e.target.value),
+                }))
+              }
+              placeholder="Match %"
+              className="px-3 py-2 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <select
+              value={newApplication.status}
+              onChange={(e) =>
+                setNewApplication((prev) => ({
+                  ...prev,
+                  status: e.target.value,
+                }))
+              }
+              aria-label="Select application status"
+              className="px-3 py-2 text-sm border border-slate-200 rounded-xl bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {applicationStatuses.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex items-center gap-2 mt-4">
+            <button
+              type="submit"
+              className="px-4 py-2 text-sm font-semibold rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+            >
+              Save Application
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowAddForm(false)}
+              className="px-4 py-2 text-sm font-semibold rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
@@ -149,6 +305,7 @@ export default function ApplicationsPage() {
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
+                aria-label="Filter applications by status"
                 className="appearance-none pl-3 pr-8 py-2 text-sm border border-slate-200 rounded-xl bg-white text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
               >
                 {statuses.map((s) => (
@@ -208,8 +365,7 @@ export default function ApplicationsPage() {
                       <div className="flex items-center gap-2">
                         <div className="w-12 h-1.5 bg-slate-100 rounded-full overflow-hidden">
                           <div
-                            className={`h-full rounded-full ${match >= 80 ? "bg-green-500" : match >= 60 ? "bg-blue-500" : "bg-amber-500"}`}
-                            style={{ width: `${match}%` }}
+                            className={`h-full rounded-full ${match >= 80 ? "bg-green-500" : match >= 60 ? "bg-blue-500" : "bg-amber-500"} ${getMatchBarWidthClass(match)}`}
                           />
                         </div>
                         <span
@@ -243,7 +399,7 @@ export default function ApplicationsPage() {
         {/* Pagination */}
         <div className="flex items-center justify-between px-6 py-3 border-t border-slate-100">
           <p className="text-xs text-slate-400">
-            Showing 1–{filtered.length} of {allApplications.length} entries
+            Showing 1–{filtered.length} of {applications.length} entries
           </p>
           <div className="flex gap-1">
             <button className="px-3 py-1.5 text-xs border border-slate-200 rounded-lg text-slate-500 hover:bg-slate-50 transition-colors">
