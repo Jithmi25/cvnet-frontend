@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
-import { Search, Plus, ChevronDown, ArrowUpDown } from "lucide-react";
+import { Search, ChevronDown, ArrowUpDown, Briefcase } from "lucide-react";
 
 type Application = {
   role: string;
@@ -96,49 +97,8 @@ export default function ApplicationsPage() {
     useState<Application[]>(seedApplications);
   const [filterStatus, setFilterStatus] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [newApplication, setNewApplication] = useState({
-    role: "",
-    company: "",
-    location: "",
-    match: 55,
-    status: "Applied",
-  });
 
   const statuses = ["All", "In Review", "Interviewing", "Applied", "Rejected"];
-
-  const applicationStatuses = statuses.filter((s) => s !== "All");
-
-  const handleAddApplication = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const appliedDate = new Date().toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-
-    setApplications((prev) => [
-      {
-        role: newApplication.role.trim(),
-        company: newApplication.company.trim(),
-        location: newApplication.location.trim() || "Remote",
-        date: appliedDate,
-        match: Math.max(0, Math.min(100, Number(newApplication.match) || 0)),
-        status: newApplication.status,
-      },
-      ...prev,
-    ]);
-
-    setNewApplication({
-      role: "",
-      company: "",
-      location: "",
-      match: 55,
-      status: "Applied",
-    });
-    setShowAddForm(false);
-  };
 
   const filtered = applications.filter((a) => {
     const matchesStatus = filterStatus === "All" || a.status === filterStatus;
@@ -160,104 +120,13 @@ export default function ApplicationsPage() {
             Track and manage your job search
           </p>
         </div>
-        <button
-          onClick={() => setShowAddForm((prev) => !prev)}
+        <Link
+          href="/applications/jobs"
           className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors"
         >
-          <Plus size={16} /> Add New
-        </button>
+          <Briefcase size={16} /> Apply here
+        </Link>
       </div>
-
-      {showAddForm && (
-        <form
-          onSubmit={handleAddApplication}
-          className="bg-white border border-slate-100 rounded-2xl p-5 mb-6 shadow-sm"
-        >
-          <h2 className="text-base font-bold text-slate-900 mb-4">
-            Add Application
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            <input
-              required
-              value={newApplication.role}
-              onChange={(e) =>
-                setNewApplication((prev) => ({ ...prev, role: e.target.value }))
-              }
-              placeholder="Role"
-              className="px-3 py-2 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <input
-              required
-              value={newApplication.company}
-              onChange={(e) =>
-                setNewApplication((prev) => ({
-                  ...prev,
-                  company: e.target.value,
-                }))
-              }
-              placeholder="Company"
-              className="px-3 py-2 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <input
-              value={newApplication.location}
-              onChange={(e) =>
-                setNewApplication((prev) => ({
-                  ...prev,
-                  location: e.target.value,
-                }))
-              }
-              placeholder="Location (optional)"
-              className="px-3 py-2 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <input
-              type="number"
-              min={0}
-              max={100}
-              value={newApplication.match}
-              onChange={(e) =>
-                setNewApplication((prev) => ({
-                  ...prev,
-                  match: Number(e.target.value),
-                }))
-              }
-              placeholder="Match %"
-              className="px-3 py-2 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <select
-              value={newApplication.status}
-              onChange={(e) =>
-                setNewApplication((prev) => ({
-                  ...prev,
-                  status: e.target.value,
-                }))
-              }
-              aria-label="Select application status"
-              className="px-3 py-2 text-sm border border-slate-200 rounded-xl bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              {applicationStatuses.map((status) => (
-                <option key={status} value={status}>
-                  {status}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex items-center gap-2 mt-4">
-            <button
-              type="submit"
-              className="px-4 py-2 text-sm font-semibold rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition-colors"
-            >
-              Save Application
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowAddForm(false)}
-              className="px-4 py-2 text-sm font-semibold rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      )}
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 gap-4 mb-6 sm:max-w-xs">

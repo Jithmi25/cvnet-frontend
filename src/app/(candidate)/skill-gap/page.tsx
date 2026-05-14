@@ -111,9 +111,21 @@ export default function SkillGapPage() {
               </div>
             </div>
             <nav className="hidden md:flex items-center gap-6">
-              <Link href="#" className="text-sm text-slate-600 hover:text-slate-900 transition">Analysis</Link>
-              <Link href="#" className="text-sm text-slate-600 hover:text-slate-900 transition">Learning Path</Link>
-              <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition">Profile</button>
+              <Link
+                href="#"
+                className="text-sm text-slate-600 hover:text-slate-900 transition"
+              >
+                Analysis
+              </Link>
+              <Link
+                href="#"
+                className="text-sm text-slate-600 hover:text-slate-900 transition"
+              >
+                Learning Path
+              </Link>
+              <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition">
+                Profile
+              </button>
             </nav>
           </div>
         </div>
@@ -123,7 +135,10 @@ export default function SkillGapPage() {
         {/* Breadcrumb & Subtitle */}
         <div className="mb-8">
           <p className="text-sm text-slate-500 mb-2">
-            <span className="text-slate-400">Dashboard</span> → <span className="text-blue-600 font-semibold">Skill Gap Analysis</span>
+            <span className="text-slate-400">Dashboard</span> →{" "}
+            <span className="text-blue-600 font-semibold">
+              Skill Gap Analysis
+            </span>
           </p>
           <div className="flex items-start justify-between">
             <div>
@@ -132,7 +147,8 @@ export default function SkillGapPage() {
                 Skill Gap Analysis
               </h2>
               <p className="text-slate-500 text-sm mt-1">
-                Deep dive into your market readiness and personalized development roadmap
+                Deep dive into your market readiness and personalized
+                development roadmap
               </p>
             </div>
           </div>
@@ -157,7 +173,10 @@ export default function SkillGapPage() {
               <div className="shrink-0 text-center">
                 {/* Circular Progress */}
                 <div className="relative w-28 h-28 mx-auto">
-                  <svg viewBox="0 0 80 80" className="w-28 h-28 -rotate-90 drop-shadow-lg">
+                  <svg
+                    viewBox="0 0 80 80"
+                    className="w-28 h-28 -rotate-90 drop-shadow-lg"
+                  >
                     <circle
                       cx="40"
                       cy="40"
@@ -181,14 +200,18 @@ export default function SkillGapPage() {
                     <span className="text-2xl font-extrabold text-slate-900">
                       {matchScore}%
                     </span>
-                    <span className="text-xs text-slate-500 font-medium">Match</span>
+                    <span className="text-xs text-slate-500 font-medium">
+                      Match
+                    </span>
                   </div>
                 </div>
                 <div className="mt-3 space-y-1">
                   <p className="text-sm font-bold text-blue-600">
                     Strong Candidate
                   </p>
-                  <p className="text-xs text-slate-500">Top 20% of candidates</p>
+                  <p className="text-xs text-slate-500">
+                    Top 20% of candidates
+                  </p>
                 </div>
               </div>
             </div>
@@ -229,13 +252,14 @@ export default function SkillGapPage() {
             <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-6 shadow-lg text-white">
               <div className="flex items-start justify-between mb-3">
                 <BookOpen className="w-6 h-6 opacity-80" />
-                <span className="text-xs bg-white bg-opacity-20 px-2 py-1 rounded-full font-semibold">AI Recommended</span>
+                <span className="text-xs bg-white bg-opacity-20 px-2 py-1 rounded-full font-semibold">
+                  AI Recommended
+                </span>
               </div>
-              <h3 className="font-bold text-lg mb-2">
-                Accelerate Your Growth
-              </h3>
+              <h3 className="font-bold text-lg mb-2">Accelerate Your Growth</h3>
               <p className="text-sm text-blue-100 mb-4">
-                Master AWS and System Design. We've created a personalized learning roadmap just for you.
+                Master AWS and System Design. We've created a personalized
+                learning roadmap just for you.
               </p>
               <Link
                 href="#"
@@ -291,7 +315,9 @@ export default function SkillGapPage() {
           <div className="px-6 py-5 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-slate-50">
             <div className="flex items-center gap-2">
               <TrendingUp className="w-6 h-6 text-blue-600" />
-              <h2 className="font-bold text-lg text-slate-900">Skill Gap Breakdown</h2>
+              <h2 className="font-bold text-lg text-slate-900">
+                Skill Gap Breakdown
+              </h2>
             </div>
           </div>
           <div className="overflow-x-auto">
@@ -338,7 +364,9 @@ export default function SkillGapPage() {
                         <p className="text-xs text-slate-400">{category}</p>
                       </td>
                       <td className="px-4 py-4">
-                        <span className={`text-xs font-semibold ${demandConfig[demand]}`}>
+                        <span
+                          className={`text-xs font-semibold ${demandConfig[demand]}`}
+                        >
                           {demand === "High" && "🔴"}
                           {demand === "Medium" && "🟡"}
                           {demand === "Low" && "🟢"} {demand}
@@ -377,7 +405,9 @@ export default function SkillGapPage() {
             </table>
           </div>
           <div className="px-6 py-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 bg-slate-50">
-            <span className="font-medium">Showing {gapBreakdown.length} of 19 skills</span>
+            <span className="font-medium">
+              Showing {gapBreakdown.length} of 19 skills
+            </span>
             <div className="flex gap-2">
               <button className="px-4 py-2 border border-slate-200 rounded-lg hover:bg-slate-100 font-medium transition">
                 ← Previous
